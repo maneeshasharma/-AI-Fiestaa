@@ -3,7 +3,7 @@
 <head>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>?</text></svg>">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ai maneesha - Workspace</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -26,8 +26,8 @@
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .glass-panel {
             background: rgba(17, 24, 39, 0.6);
-            -webkit--webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px); 
+            backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         .stream-content pre {
@@ -312,11 +312,7 @@
         });
         updateGrid();
 
-        // --- SIDEBAR TOGGLE ---
-        const sidebar = document.getElementById('sidebar');
-        document.getElementById('collapse-sidebar').addEventListener('click', () => {
-            sidebar.classList.toggle('-ml-64');
-        });
+
 
         // --- UTILS ---
         const escapeHtml = (unsafe) => {
