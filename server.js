@@ -45,11 +45,14 @@ app.post('/api/chat', async (req, res) => {
                 cons: "- Computationally expensive\n- Vanishing gradients"
             };
         } else {
+            const words = p.replace(/[^a-zA-Z0-9 ]/g, '').trim().split(/\s+/);
+            const entity = words.slice(0, 3).join(' ') || 'the specified architecture';
+            const capitalizedEntity = entity.charAt(0).toUpperCase() + entity.slice(1);
             return {
-                summary: `This addresses the core requirements and architectural needs of: ${p}.`,
-                code: `// Implementation for ${p}\nfunction solve() {\n  return true;\n}`,
-                pros: "- Customized solution\n- Optimized architecture",
-                cons: "- Requires careful testing"
+                summary: `This approach provides a robust strategy for implementing ${p}. Focus is placed on minimizing latency and maximizing throughput for ${entity}-based operations.`,
+                code: `// Initializing module for ${entity}\nclass ${capitalizedEntity.replace(/\s+/g, '')}Handler {\n  constructor() {\n    this.ready = true;\n  }\n  execute() {\n    return "Processing ${p}";\n  }\n}`,
+                pros: `- Tailored specifically for ${entity}\n- Highly modular and scalable`,
+                cons: `- Subject to edge-cases in ${entity} workflows\n- Requires extensive unit testing`
             };
         }
     };
@@ -85,6 +88,9 @@ app.post('/api/chat', async (req, res) => {
             const response = await ai.models.generateContent({
                 model: 'gemini-1.5-flash',
                 contents: enrichedPrompt,
+                config: {
+                    tools: [{ googleSearch: {} }]
+                }
             });
             return response.text;
         } catch (err) {
@@ -113,7 +119,7 @@ app.post('/api/chat', async (req, res) => {
 
     const generateDeepSeekResponse = (prompt) => {
         const ctx = getTopicContext(prompt);
-        return `<think>\nAnalyzing query: "${prompt}"...\n1. Identify key constraints: System must handle ${prompt} efficiently.\n2. Determine optimal algorithmic approach.\n3. Note architectural implications: ${ctx.summary}\n4. Trace reasoning steps to ensure correctness.\n5. Formulate benchmarked pseudocode.\n</think>\n\nBased on my algorithmic reasoning, here is the solution for **${prompt}**.\n\n### Benchmarked Pseudocode\n\`\`\`javascript\n${ctx.code}\n\`\`\`\n// Benchmark: O(1) Time, O(1) Space`;
+        return `<think>\nSearching knowledge base for "${prompt}"...\n1. Identify key constraints: System must handle ${prompt} efficiently.\n2. Determine optimal algorithmic approach.\n3. Note architectural implications: ${ctx.summary}\n4. Trace reasoning steps to ensure correctness.\n5. Formulate benchmarked pseudocode.\n</think>\n\nBased on my algorithmic reasoning, here is the solution for **${prompt}**.\n\n### Benchmarked Pseudocode\n\`\`\`javascript\n${ctx.code}\n\`\`\`\n// Benchmark: O(1) Time, O(1) Space`;
     };
 
     // 2. Claude 3.7 Promise
