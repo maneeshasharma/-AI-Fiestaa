@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>?</text></svg>">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ai maneesha - Log In</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            400: '#34d399',
+                            500: '#10b981',
+                            600: '#059669',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #08090b;
+            color: #f9fafb;
+        }
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.6);
+            -webkit--webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-500/30 selection:text-brand-200 min-h-screen flex items-center justify-center relative overflow-hidden">
+    <!-- Ambient Background Blobs -->
+    <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-[20%] left-[20%] w-96 h-96 bg-brand-600/20 rounded-full mix-blend-screen filter blur-[100px] animate-pulse"></div>
+        <div class="absolute bottom-[20%] right-[20%] w-96 h-96 bg-teal-600/20 rounded-full mix-blend-screen filter blur-[100px]"></div>
+    </div>
+
+    <!-- Back Button -->
+    <a href="index.html" class="absolute top-6 left-6 z-50 text-gray-400 hover:text-white flex items-center gap-2 transition-colors">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Home
+    </a>
+
+    <!-- Login Container -->
+    <div class="glass-panel p-10 rounded-2xl w-full max-w-md z-10 shadow-2xl border border-gray-800">
+        <div class="flex justify-center mb-6">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-brand-500 to-teal-400 flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.5)]">
+                <i data-lucide="sparkles" class="w-6 h-6 text-white"></i>
+            </div>
+        </div>
+        
+        <h2 class="text-2xl font-bold text-center text-white mb-2">Welcome Back</h2>
+        <p class="text-center text-gray-400 text-sm mb-8">Log In to your Ai maneesha account</p>
+
+        <form id="login-form" class="space-y-4">
+            <div>
+                <label class="block text-xs font-medium text-gray-400 mb-1">Email</label>
+                <input id="login-email" type="email" required placeholder="you@example.com" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-sm text-gray-200 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors">
+            </div>
+            <div>
+                <div class="flex justify-between items-center mb-1">
+                    <label class="block text-xs font-medium text-gray-400">Password</label>
+                    <a href="#" class="text-xs text-brand-400 hover:text-brand-300">Forgot?</a>
+                </div>
+                <input id="login-password" type="password" required placeholder="••••••••" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-sm text-gray-200 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors">
+            </div>
+            
+            <div id="login-error" class="text-red-500 text-[10px] hidden text-center w-full mb-2">Access denied. Only registered accounts can log in. Please check your credentials or sign up first.</div>
+            
+            <button type="submit" class="w-full mt-6 py-2.5 rounded-lg bg-gradient-to-r from-brand-600 to-teal-500 hover:from-brand-500 hover:to-teal-400 text-white font-medium text-sm transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+                Log In
+            </button>
+        </form>
+        
+        <p class="text-center text-xs text-gray-500 mt-6">
+            Don't have an account? <a href="signup.html" class="text-white hover:text-brand-400 transition-colors">Sign up</a>
+        </p>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value.toLowerCase().trim();
+            const password = document.getElementById('login-password').value;
+            
+            let users = JSON.parse(localStorage.getItem('aifiesta_users')) || [];
+            const matchedUser = users.find(u => u.email === email && u.password === password);
+            
+            if (matchedUser) {
+                document.getElementById('login-error').classList.add('hidden');
+                document.getElementById('login-error').classList.remove('block');
+                localStorage.setItem('aifiesta_current_user', JSON.stringify({ name: matchedUser.name, email: matchedUser.email }));
+                window.location.href = 'dashboard.html';
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+                document.getElementById('login-error').classList.add('block');
+            }
+        });
+    </script>
+</body>
+</html>
+

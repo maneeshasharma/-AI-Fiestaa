@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>?</text></svg>">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ai maneesha - World's Most Powerful AIs. One Chat.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            200: '#a7f3d0',
+                            300: '#6ee7b7',
+                            400: '#34d399',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                            950: '#022c22',
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 10s infinite',
+                        'blob-delayed': 'blob 10s infinite 2s',
+                        'blob-delayed-2': 'blob 10s infinite 4s',
+                        'gradient-xy': 'gradient-xy 3s ease infinite',
+                        'border-spin': 'border-spin 4s linear infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                        },
+                        'gradient-xy': {
+                            '0%, 100%': {
+                                'background-size': '400% 400%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            }
+                        },
+                        'border-spin': {
+                            '100%': { transform: 'rotate(360deg)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #08090b; /* updated background color */
+            color: #f9fafb; /* gray-50 */
+            overflow-x: hidden;
+        }
+        
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.6); /* gray-900 */
+            -webkit--webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-pill {
+            background: rgba(17, 24, 39, 0.7);
+            -webkit--webkit-backdrop-filter: blur(16px); backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Typewriter Cursor */
+        .cursor-blink::after {
+            content: '|';
+            animation: blink 1s step-start infinite;
+            color: #10b981;
+            margin-left: 2px;
+        }
+        
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* Rotating Gradient Border */
+        .gradient-border-card {
+            position: relative;
+            background: #111827;
+            border-radius: 1.5rem;
+            z-index: 1;
+        }
+        .gradient-border-card::before {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            border-radius: 1.6rem;
+            background: conic-gradient(from 0deg, transparent 0%, #10b981 25%, #0d9488 50%, transparent 50%);
+            z-index: -1;
+            animation: border-spin 4s linear infinite;
+        }
+        .gradient-border-card::after {
+            content: "";
+            position: absolute;
+            inset: 1px;
+            background: #111827;
+            border-radius: 1.5rem;
+            z-index: -1;
+        }
+        
+        /* Hide scrollbar for clean horizontal scrolls if needed */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #030712; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2937; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #374151; 
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-500/30 selection:text-brand-200">
+
+    <!-- Starfield Canvas -->
+    <canvas id="starfield" class="fixed inset-0 z-0 pointer-events-none"></canvas>
+
+    <!-- Ambient Background Blobs -->
+    <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-brand-600/20 rounded-full mix-blend-screen filter blur-[100px] animate-blob"></div>
+        <div class="absolute top-[20%] right-[-10%] w-96 h-96 bg-teal-600/20 rounded-full mix-blend-screen filter blur-[100px] animate-blob-delayed"></div>
+        <div class="absolute bottom-[-20%] left-[20%] w-[500px] h-[500px] bg-emerald-800/20 rounded-full mix-blend-screen filter blur-[120px] animate-blob-delayed-2"></div>
+    </div>
+
+    <!-- Floating Pill Navbar -->
+    <nav class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl">
+        <div class="glass-pill rounded-full px-6 py-3 flex items-center justify-between transition-all duration-300 hover:border-brand-500/30 hover:shadow-[0_0_20px_rgba(16,185,129,0.15)]">
+            <!-- Logo -->
+            <a href="#" aria-label="Ai maneesha Home" class="flex items-center gap-2 group">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-500 to-teal-400 flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.5)] group-hover:scale-105 transition-transform">
+                    <i data-lucide="sparkles" class="w-4 h-4 text-white"></i>
+                </div>
+                <span class="font-bold text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Ai maneesha</span>
+            </a>
+
+            <!-- Nav Links (Desktop) -->
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
+                <a href="#features" class="hover:text-white hover:text-shadow-sm transition-colors">Features</a>
+                <a href="#comparison" class="hover:text-white transition-colors">Comparison</a>
+                <a href="#pricing" class="hover:text-white transition-colors">Pricing</a>
+                <a href="#faq" class="hover:text-white transition-colors">FAQs</a>
+                <a href="#business" class="hover:text-white transition-colors flex items-center gap-1">
+                    For Business <span class="px-1.5 py-0.5 rounded-full bg-gray-800 text-[10px] border border-gray-700">New</span>
+                </a>
+            </div>
+
+            <!-- Action Button -->
+            <a href="login.html" class="relative group hidden sm:flex items-center justify-center px-5 py-2 text-sm font-semibold rounded-full bg-gradient-to-r from-brand-600 to-teal-500 text-white overflow-hidden transition-all hover:scale-105 hover:shadow-[0_0_20px_rgba(16,185,129,0.4)]">
+                <span class="relative z-10 flex items-center gap-2">
+                    Log In <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                </span>
+                <div class="absolute inset-0 bg-gradient-to-r from-brand-500 to-teal-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            </a>
+            
+            <!-- Mobile Menu Toggle -->
+            <button class="md:hidden text-gray-300 hover:text-white">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="relative z-10">
+        
+        <!-- Hero Section -->
+        <section class="pt-40 pb-20 px-6 lg:px-8 max-w-7xl mx-auto min-h-screen flex items-center">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center w-full">
+                
+                <!-- Left: Copy & Actions -->
+                <div class="flex flex-col items-start scroll-reveal">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-orange-500/30 bg-orange-500/10 text-orange-400 text-sm font-medium mb-6 backdrop-blur-sm">
+                        <div class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></div>
+                        Built by Hackathon Builders
+                    </div>
+                    
+                    <h1 class="text-5xl lg:text-7xl font-bold tracking-tight mb-6 leading-[1.1]">
+                        World’s Most <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-teal-300 to-emerald-500 animate-gradient-xy">
+                            Powerful AIs.
+                        </span><br>
+                        One Chat.
+                    </h1>
+                    
+                    <p class="text-lg lg:text-xl text-gray-400 mb-8 max-w-xl leading-relaxed">
+                        Stop paying for 4 separate subscriptions. Access ChatGPT-4o, Claude 3.7, Gemini 1.5 Pro, and DeepSeek simultaneously in a single, unified interface.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                        <button onclick="window.location.href='signup.html'" class="px-8 py-4 rounded-xl bg-white text-gray-900 font-bold text-lg hover:bg-gray-100 transition-colors flex items-center justify-center gap-2 hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]">
+                            Start Free Trial
+                        </button>
+                        <button onclick="window.location.href='signup.html'" class="px-8 py-4 rounded-xl glass-panel text-white font-bold text-lg hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 group border-gray-700">
+                            <i data-lucide="play-circle" class="w-5 h-5 text-gray-400 group-hover:text-brand-400 transition-colors"></i>
+                            Watch Demo
+                        </button>
+                    </div>
+                    
+                    <div class="mt-8 flex items-center gap-4 text-sm text-gray-500">
+                        <div class="flex -space-x-2">
+                            <img class="w-8 h-8 rounded-full border-2 border-gray-950" src="https://i.pravatar.cc/100?img=11" alt="User">
+                            <img class="w-8 h-8 rounded-full border-2 border-gray-950" src="https://i.pravatar.cc/100?img=12" alt="User">
+                            <img class="w-8 h-8 rounded-full border-2 border-gray-950" src="https://i.pravatar.cc/100?img=13" alt="User">
+                            <img class="w-8 h-8 rounded-full border-2 border-gray-950" src="https://i.pravatar.cc/100?img=14" alt="User">
+                        </div>
+                        <p>Trusted by 10,000+ power users</p>
+                    </div>
+                </div>
+                
+                <!-- Right: Realistic 4-Column Mockup -->
+                <div class="relative w-full aspect-[4/3] rounded-2xl border border-gray-800 bg-gray-950/80 overflow-hidden flex flex-col scroll-reveal shadow-[0_0_80px_-20px_rgba(16,185,129,0.3)]">
+                    <!-- Mockup Header -->
+                    <div class="h-12 border-b border-gray-800 flex items-center px-4 justify-between bg-gray-900/50">
+                        <div class="flex gap-2 items-center">
+                            <div class="flex gap-1.5 mr-4">
+                                <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                            </div>
+                            <!-- Persona Switcher -->
+                            <select id="persona-select" class="bg-gray-800 border border-gray-700 text-gray-300 text-[10px] rounded-md px-2 py-1 outline-none hover:border-gray-600 transition-colors appearance-none pr-6 relative bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2210%22%20height%3D%225%22%20viewBox%3D%220%200%2010%205%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M0%200L5%205L10%200H0Z%22%20fill%3D%22%239CA3AF%22%2F%3E%3C%2Fsvg%3E')] bg-no-repeat bg-[center_right_0.5rem] focus:border-brand-500">
+                                <option value="">Default Persona</option>
+                                <option value="Developer Mode">Developer Mode</option>
+                                <option value="Executive Mode">Executive Mode</option>
+                                <option value="Creative Mode">Creative Mode</option>
+                            </select>
+                        </div>
+                        <div class="text-xs text-gray-500 font-medium flex items-center gap-2">
+                            <i data-lucide="lock" class="w-3 h-3"></i> aifiesta.ai/chat
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button id="clear-btn" class="text-[10px] text-red-400 bg-red-500/10 hover:bg-red-500/20 px-2 py-0.5 rounded-full border border-red-500/20 transition-colors flex items-center gap-1 opacity-80 hover:opacity-100"><i data-lucide="trash-2" class="w-3 h-3"></i> Clear Canvas</button>
+                            <span class="text-[10px] text-gray-500 bg-gray-800 px-2 py-0.5 rounded-full border border-gray-700">Sync ON</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Evaluator Banner -->
+                    <div id="evaluator-banner" class="hidden px-4 py-2 border-b border-gray-800 bg-gradient-to-r from-brand-900/20 to-teal-900/20 items-center justify-between text-[10px] transition-all">
+                        <div class="flex gap-4 w-full">
+                            <span class="flex items-center gap-1 text-gray-400"><i data-lucide="zap" class="w-3 h-3 text-yellow-400"></i> Fastest: <strong id="eval-fastest" class="text-white">--</strong></span>
+                            <span class="flex items-center gap-1 text-gray-400"><i data-lucide="align-left" class="w-3 h-3 text-blue-400"></i> Comprehensive: <strong id="eval-comprehensive" class="text-white">--</strong></span>
+                            <span class="flex items-center gap-1 text-gray-400"><i data-lucide="code" class="w-3 h-3 text-brand-400"></i> Code Pick: <strong id="eval-code" class="text-white">--</strong></span>
+                        </div>
+                    </div>
+                    
+                    <!-- 4-Column Chat Area -->
+                    <div class="flex-1 grid grid-cols-4 divide-x divide-gray-800 overflow-hidden relative">
+                        
+                        <!-- Col 1: GPT-4o -->
+                        <div class="flex flex-col bg-gray-900/20 relative">
+                            <div class="p-2 border-b border-gray-800/50 flex items-center justify-between bg-gray-900/40 group/header relative">
+                                <div class="flex items-center gap-1.5">
+                                    <div class="w-4 h-4 rounded-full bg-[#10a37f] flex items-center justify-center shrink-0"><i data-lucide="zap" class="w-2.5 h-2.5 text-white"></i></div>
+                                    <div class="flex flex-col">
+                                        <span class="text-[10px] font-semibold text-gray-300 leading-tight flex items-center gap-1">GPT-4o <i data-lucide="trophy" class="w-2.5 h-2.5 text-yellow-400 hidden trophy-icon" id="trophy-gpt"></i></span>
+                                        <span class="text-[8px] text-[#10a37f] font-medium opacity-80">Format: Direct Schema</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-[8px] text-gray-500 flex items-center gap-1"><i data-lucide="activity" class="w-2 h-2 text-[#10a37f]"></i> <span class="latency-val">--</span></span>
+                                    <button class="copy-btn opacity-0 group-hover/header:opacity-100 transition-opacity text-gray-400 hover:text-white" data-target="stream-gpt" title="Copy to clipboard">
+                                        <i data-lucide="copy" class="w-3 h-3"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="p-3 text-[10px] text-gray-400 font-mono leading-relaxed stream-target" id="stream-gpt"></div>
+                            <div class="absolute bottom-2 right-2 text-[8px] text-gray-600 font-mono">Tokens: <span class="text-gray-400">142</span></div>
+                        </div>
+
+                        <!-- Col 2: Claude 3.7 -->
+                        <div class="flex flex-col bg-gray-900/20 relative">
+                            <div class="p-2 border-b border-gray-800/50 flex items-center justify-between bg-gray-900/40 group/header relative">
+                                <div class="flex items-center gap-1.5">
+                                    <div class="w-4 h-4 rounded-full bg-[#d97757] flex items-center justify-center shrink-0"><i data-lucide="feather" class="w-2.5 h-2.5 text-white"></i></div>
+                                    <div class="flex flex-col">
+                                        <span class="text-[10px] font-semibold text-gray-300 leading-tight flex items-center gap-1">Claude 3.7 <i data-lucide="trophy" class="w-2.5 h-2.5 text-yellow-400 hidden trophy-icon" id="trophy-claude"></i></span>
+                                        <span class="text-[8px] text-[#d97757] font-medium opacity-80">Strengths: Clean Logic & UX</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-[8px] text-gray-500 flex items-center gap-1"><i data-lucide="activity" class="w-2 h-2 text-[#d97757]"></i> <span class="latency-val">--</span></span>
+                                    <button class="copy-btn opacity-0 group-hover/header:opacity-100 transition-opacity text-gray-400 hover:text-white" data-target="stream-claude" title="Copy to clipboard">
+                                        <i data-lucide="copy" class="w-3 h-3"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="p-3 text-[10px] text-gray-400 font-mono leading-relaxed stream-target" id="stream-claude"></div>
+                            <div class="absolute bottom-2 right-2 text-[8px] text-gray-600 font-mono">Tokens: <span class="text-gray-400">158</span></div>
+                        </div>
+
+                        <!-- Col 3: Gemini 1.5 -->
+                        <div class="flex flex-col bg-gray-900/20 relative">
+                            <div class="p-2 border-b border-gray-800/50 flex items-center justify-between bg-gray-900/40 group/header relative">
+                                <div class="flex items-center gap-1.5">
+                                    <div class="w-4 h-4 rounded-full bg-[#4285f4] flex items-center justify-center shrink-0"><i data-lucide="sparkle" class="w-2.5 h-2.5 text-white"></i></div>
+                                    <div class="flex flex-col">
+                                        <span class="text-[10px] font-semibold text-gray-300 leading-tight flex items-center gap-1">Gemini 1.5 <i data-lucide="trophy" class="w-2.5 h-2.5 text-yellow-400 hidden trophy-icon" id="trophy-gemini"></i></span>
+                                        <span class="text-[8px] text-[#4285f4] font-medium opacity-80">Context: 2M tokens</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-[8px] text-gray-500 flex items-center gap-1"><i data-lucide="activity" class="w-2 h-2 text-[#4285f4]"></i> <span class="latency-val">--</span></span>
+                                    <button class="copy-btn opacity-0 group-hover/header:opacity-100 transition-opacity text-gray-400 hover:text-white" data-target="stream-gemini" title="Copy to clipboard">
+                                        <i data-lucide="copy" class="w-3 h-3"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="p-3 text-[10px] text-gray-400 font-mono leading-relaxed stream-target" id="stream-gemini"></div>
+                            <div class="absolute bottom-2 right-2 text-[8px] text-gray-600 font-mono">Tokens: <span class="text-gray-400">120</span></div>
+                        </div>
+
+                        <!-- Col 4: DeepSeek -->
+                        <div class="flex flex-col bg-gray-900/20 relative">
+                            <div class="p-2 border-b border-gray-800/50 flex items-center justify-between bg-gray-900/40 group/header relative">
+                                <div class="flex items-center gap-1.5">
+                                    <div class="w-4 h-4 rounded-full bg-[#4d6bfe] flex items-center justify-center shrink-0"><i data-lucide="brain" class="w-2.5 h-2.5 text-white"></i></div>
+                                    <div class="flex flex-col">
+                                        <span class="text-[10px] font-semibold text-gray-300 leading-tight flex items-center gap-1">DeepSeek R1 <i data-lucide="trophy" class="w-2.5 h-2.5 text-yellow-400 hidden trophy-icon" id="trophy-deepseek"></i></span>
+                                        <span class="text-[8px] text-[#4d6bfe] font-medium opacity-80">Mode: &lt;think&gt; Verified</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-[8px] text-gray-500 flex items-center gap-1"><i data-lucide="activity" class="w-2 h-2 text-[#4d6bfe]"></i> <span class="latency-val">--</span></span>
+                                    <button class="copy-btn opacity-0 group-hover/header:opacity-100 transition-opacity text-gray-400 hover:text-white" data-target="stream-deepseek" title="Copy to clipboard">
+                                        <i data-lucide="copy" class="w-3 h-3"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="p-3 text-[10px] text-gray-400 font-mono leading-relaxed stream-target" id="stream-deepseek"></div>
+                            <div class="absolute bottom-2 right-2 text-[8px] text-gray-600 font-mono">Tokens: <span class="text-gray-400">95</span></div>
+                        </div>
+
+                    </div>
+                    
+                    <!-- Preset Pills -->
+                    <div class="px-4 py-2 border-t border-gray-800/50 bg-gray-900/30 flex items-center gap-2 overflow-x-auto whitespace-nowrap hide-scrollbar relative z-10">
+                        <button class="preset-btn px-3 py-1 rounded-full bg-gray-800 hover:bg-brand-600/20 hover:text-brand-400 border border-gray-700 hover:border-brand-500/50 text-[10px] text-gray-400 transition-all cursor-pointer">⚡ Microservices vs Monolith</button>
+                        <button class="preset-btn px-3 py-1 rounded-full bg-gray-800 hover:bg-brand-600/20 hover:text-brand-400 border border-gray-700 hover:border-brand-500/50 text-[10px] text-gray-400 transition-all cursor-pointer">🐞 Find Memory Leak in Node.js</button>
+                        <button class="preset-btn px-3 py-1 rounded-full bg-gray-800 hover:bg-brand-600/20 hover:text-brand-400 border border-gray-700 hover:border-brand-500/50 text-[10px] text-gray-400 transition-all cursor-pointer">📈 Cold Email Outreach for Investors</button>
+                        <button class="preset-btn px-3 py-1 rounded-full bg-gray-800 hover:bg-brand-600/20 hover:text-brand-400 border border-gray-700 hover:border-brand-500/50 text-[10px] text-gray-400 transition-all cursor-pointer">🧠 Explain Quantum Entanglement simply</button>
+                    </div>
+
+                    <!-- Bottom Prompt Bar -->
+                    <div class="h-16 border-t border-gray-800 bg-gray-900/80 p-3 flex items-end gap-2 z-10 backdrop-blur-md">
+                        <div class="flex-1 bg-gray-950 border border-gray-700 rounded-lg p-2.5 flex items-center shadow-inner">
+                            <input type="text" id="prompt-input" class="w-full bg-transparent text-xs text-gray-300 font-mono outline-none" placeholder="Ask all 4 models at once..." autocomplete="off">
+                        </div>
+                        <button class="w-9 h-9 rounded-lg bg-gray-800 flex items-center justify-center text-brand-400 shrink-0 hover:bg-gray-700 transition-colors border border-gray-700 hover:border-brand-500/50" id="enhance-btn" title="Enhance Prompt">
+                            <i data-lucide="wand-2" class="w-4 h-4"></i>
+                        </button>
+                        <button class="w-9 h-9 rounded-lg bg-gray-800 flex items-center justify-center text-gray-400 shrink-0 hover:bg-gray-700 transition-colors border border-gray-700" id="export-btn" title="Download Full Comparison">
+                            <i data-lucide="download" class="w-4 h-4"></i>
+                        </button>
+                        <button class="w-9 h-9 rounded-lg bg-brand-600 flex items-center justify-center text-white shrink-0 hover:bg-brand-500 transition-colors shadow-lg shadow-brand-500/20" id="send-btn">
+                            <i data-lucide="arrow-up" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stacked Feature Showcase -->
+        <section id="features" class="py-32 px-6 lg:px-8 max-w-5xl mx-auto relative z-10">
+            <!-- Section Header -->
+            <div class="text-center mb-24 scroll-reveal">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gray-700 bg-gray-800/50 text-gray-300 text-sm font-semibold mb-6 backdrop-blur-sm">
+                    <i data-lucide="layers" class="w-4 h-4 text-brand-400"></i> One Window. 9+ Perspectives.
+                </div>
+                <h2 class="text-4xl md:text-6xl font-bold mb-6 tracking-tight text-white">Achieve Optimal Efficiency.</h2>
+                <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto">Every feature is designed to amplify your AI-powered productivity.</p>
+            </div>
+            
+            <div class="space-y-24 relative" id="cards-container">
+                
+                <!-- Card 1 -->
+                <div class="glow-card sticky top-24 glass-panel p-8 md:p-12 rounded-[2rem] border border-gray-800 transition-colors duration-500 shadow-2xl overflow-hidden bg-gray-900/80 backdrop-blur-xl">
+                    <div class="grid lg:grid-cols-2 gap-12 items-center relative z-10">
+                        <div>
+                            <h3 class="text-3xl font-bold text-white mb-4">Compare All Premium AIs at Once</h3>
+                            <p class="text-gray-400 text-lg mb-8">Stop context switching. See how GPT-4o, Claude 3.7, and Gemini approach the exact same problem instantly.</p>
+                            
+                            <ul class="space-y-4">
+                                <li class="flex items-start gap-3">
+                                    <div class="mt-1 bg-brand-500/20 p-1.5 rounded-full"><i data-lucide="check" class="w-4 h-4 text-brand-400"></i></div>
+                                    <span class="text-gray-300 text-lg">Save hours of manual comparison</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <div class="mt-1 bg-brand-500/20 p-1.5 rounded-full"><i data-lucide="check" class="w-4 h-4 text-brand-400"></i></div>
+                                    <span class="text-gray-300 text-lg">Customize your AI team instantly</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <div class="mt-1 bg-brand-500/20 p-1.5 rounded-full"><i data-lucide="check" class="w-4 h-4 text-brand-400"></i></div>
+                                    <span class="text-gray-300 text-lg">Never miss the most accurate answer</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <!-- High Contrast Mockup -->
+                        <div class="relative rounded-xl border border-gray-700 bg-gray-950 overflow-hidden shadow-2xl">
+                            <!-- Model Pill Bar -->
+                            <div class="h-10 border-b border-gray-800 bg-gray-900 flex items-center px-4 justify-center gap-2">
+                                <div class="px-2 py-1 rounded-full bg-gray-800 border border-gray-700 flex items-center gap-1"><div class="w-2.5 h-2.5 rounded-full bg-[#10a37f]"></div></div>
+                                <div class="px-2 py-1 rounded-full bg-gray-800 border border-gray-700 flex items-center gap-1"><div class="w-2.5 h-2.5 rounded-full bg-[#d97757]"></div></div>
+                                <div class="px-2 py-1 rounded-full bg-gray-800 border border-gray-700 flex items-center gap-1"><div class="w-2.5 h-2.5 rounded-full bg-[#4285f4]"></div></div>
+                                <div class="px-2 py-1 rounded-full bg-gray-800 border border-gray-700 flex items-center gap-1"><div class="w-2.5 h-2.5 rounded-full bg-[#4d6bfe]"></div></div>
+                            </div>
+                            <div class="p-4 grid grid-cols-3 gap-2 h-48 opacity-90">
+                                <div class="bg-gray-900 rounded p-2 flex flex-col justify-between border border-gray-800">
+                                    <div class="space-y-1.5"><div class="h-1.5 w-full bg-gray-700 rounded"></div><div class="h-1.5 w-3/4 bg-gray-700 rounded"></div></div>
+                                    <div class="text-[8px] text-gray-500 flex items-center justify-between"><span class="flex items-center gap-1"><div class="w-1.5 h-1.5 rounded-full bg-brand-500"></div> 1.2s</span> <span>110 tk</span></div>
+                                </div>
+                                <div class="bg-gray-900 rounded p-2 flex flex-col justify-between border border-gray-800">
+                                    <div class="space-y-1.5"><div class="h-1.5 w-full bg-gray-700 rounded"></div><div class="h-1.5 w-5/6 bg-gray-700 rounded"></div><div class="h-1.5 w-1/2 bg-gray-700 rounded"></div></div>
+                                    <div class="text-[8px] text-gray-500 flex items-center justify-between"><span class="flex items-center gap-1"><div class="w-1.5 h-1.5 rounded-full bg-brand-500"></div> 1.4s</span> <span>145 tk</span></div>
+                                </div>
+                                <div class="bg-gray-900 rounded p-2 flex flex-col justify-between border border-brand-500/40 relative overflow-hidden">
+                                    <div class="absolute inset-0 bg-brand-500/5"></div>
+                                    <div class="space-y-1.5 relative z-10"><div class="h-1.5 w-full bg-gray-600 rounded"></div><div class="h-1.5 w-full bg-gray-600 rounded"></div><div class="w-1.5 h-3 bg-brand-400 mt-1 animate-pulse"></div></div>
+                                    <div class="text-[8px] text-gray-400 flex items-center gap-1 font-bold relative z-10"><i data-lucide="activity" class="w-2 h-2 text-brand-400"></i> Typing...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="glow-card sticky top-28 glass-panel p-8 md:p-12 rounded-[2rem] border border-gray-800 transition-colors duration-500 shadow-2xl overflow-hidden bg-gray-900/80 backdrop-blur-xl">
+                    <div class="grid lg:grid-cols-2 gap-12 items-center relative z-10">
+                        <div class="order-2 lg:order-1">
+                            <!-- Custom Projects Mockup -->
+                            <div class="relative rounded-xl border border-gray-700 bg-gray-950 overflow-hidden shadow-2xl p-4">
+                                <div class="text-xs text-gray-400 font-bold mb-3 uppercase tracking-wider flex justify-between items-center">
+                                    Active Workspace <i data-lucide="sliders-horizontal" class="w-3 h-3 text-gray-500"></i>
+                                </div>
+                                <div class="space-y-3">
+                                    <div class="p-3 rounded-lg bg-gray-900 border border-brand-500/40 flex justify-between items-center relative overflow-hidden">
+                                        <div class="absolute inset-0 bg-brand-500/10"></div>
+                                        <div class="flex items-center gap-3 relative z-10">
+                                            <div class="w-8 h-8 rounded bg-gray-800 border border-gray-700 flex items-center justify-center">
+                                                <i data-lucide="code" class="text-brand-400 w-4 h-4"></i>
+                                            </div>
+                                            <div>
+                                                <div class="text-gray-200 font-medium text-sm">Code Review Mode</div>
+                                                <div class="text-[10px] text-gray-500">System prompt active</div>
+                                            </div>
+                                        </div>
+                                        <div class="w-2 h-2 rounded-full bg-brand-500 shadow-[0_0_10px_#10b981] relative z-10 animate-pulse"></div>
+                                    </div>
+                                    <div class="p-3 rounded-lg bg-gray-900/50 border border-gray-800 flex justify-between items-center opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded bg-gray-800 border border-gray-700 flex items-center justify-center">
+                                                <i data-lucide="megaphone" class="text-gray-400 w-4 h-4"></i>
+                                            </div>
+                                            <div>
+                                                <div class="text-gray-400 font-medium text-sm">Marketing Copywriter</div>
+                                                <div class="text-[10px] text-gray-600">Saved template</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-1 lg:order-2">
+                            <h3 class="text-3xl font-bold text-white mb-4">Custom Projects & Instructions</h3>
+                            <p class="text-gray-400 text-lg mb-8">Set persistent rules for your AI fleet. Give them specific roles, tone guidelines, and output formats that stick across every conversation.</p>
+                            <button class="px-6 py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-medium transition-colors border border-gray-700 flex items-center gap-2 group">
+                                <i data-lucide="settings" class="w-4 h-4 group-hover:rotate-45 transition-transform"></i> Configure Workspace
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="glow-card sticky top-32 glass-panel p-8 md:p-12 rounded-[2rem] border border-gray-800 transition-colors duration-500 shadow-2xl overflow-hidden bg-gray-900/80 backdrop-blur-xl">
+                    <div class="grid lg:grid-cols-2 gap-12 items-center relative z-10">
+                        <div>
+                            <h3 class="text-3xl font-bold text-white mb-4">Multimodal Studio</h3>
+                            <p class="text-gray-400 text-lg mb-8">Generate images with DALL-E 3 & Midjourney, transcribe audio, and parse complex PDFs seamlessly within the same unified chat.</p>
+                            <div class="flex gap-4">
+                                <div class="px-4 py-2 rounded-lg bg-gray-800/50 border border-gray-700 flex flex-col items-center justify-center gap-1 group hover:border-purple-500/30 transition-colors">
+                                    <i data-lucide="image" class="w-5 h-5 text-purple-400 group-hover:scale-110 transition-transform"></i>
+                                    <span class="text-[10px] font-medium text-gray-300">Images</span>
+                                </div>
+                                <div class="px-4 py-2 rounded-lg bg-gray-800/50 border border-gray-700 flex flex-col items-center justify-center gap-1 group hover:border-blue-500/30 transition-colors">
+                                    <i data-lucide="mic" class="w-5 h-5 text-blue-400 group-hover:scale-110 transition-transform"></i>
+                                    <span class="text-[10px] font-medium text-gray-300">Audio</span>
+                                </div>
+                                <div class="px-4 py-2 rounded-lg bg-gray-800/50 border border-gray-700 flex flex-col items-center justify-center gap-1 group hover:border-orange-500/30 transition-colors">
+                                    <i data-lucide="file-text" class="w-5 h-5 text-orange-400 group-hover:scale-110 transition-transform"></i>
+                                    <span class="text-[10px] font-medium text-gray-300">Docs</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Multimodal Mockup -->
+                        <div class="relative rounded-xl border border-gray-700 bg-gray-950 overflow-hidden shadow-2xl p-4 flex gap-4">
+                            <!-- Image Generation -->
+                            <div class="flex-1 bg-gray-900 rounded-lg p-3 border border-gray-800 flex flex-col">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <i data-lucide="image" class="w-4 h-4 text-purple-400"></i> <span class="text-xs text-gray-300 font-medium">Midjourney v6</span>
+                                </div>
+                                <div class="flex-1 rounded-lg bg-gray-800 flex items-center justify-center overflow-hidden group min-h-[100px]">
+                                    <div class="w-full h-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
+                                        <i data-lucide="sparkles" class="w-8 h-8 text-purple-400/50"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Audio Waveform -->
+                            <div class="flex-1 bg-gray-900 rounded-lg p-3 border border-gray-800 flex flex-col">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <i data-lucide="mic" class="w-4 h-4 text-blue-400"></i> <span class="text-xs text-gray-300 font-medium">Whisper-v3</span>
+                                </div>
+                                <div class="flex-1 flex items-center justify-center gap-1.5 px-2 bg-gray-800/30 rounded-lg border border-gray-800 min-h-[100px]">
+                                    <div class="w-1.5 h-4 bg-blue-500/60 rounded-full animate-[pulse_1s_ease-in-out_infinite]"></div>
+                                    <div class="w-1.5 h-8 bg-blue-500/80 rounded-full animate-[pulse_1.2s_ease-in-out_infinite]"></div>
+                                    <div class="w-1.5 h-12 bg-blue-400 rounded-full animate-[pulse_0.8s_ease-in-out_infinite]"></div>
+                                    <div class="w-1.5 h-6 bg-blue-500/60 rounded-full animate-[pulse_1.5s_ease-in-out_infinite]"></div>
+                                    <div class="w-1.5 h-10 bg-blue-500/80 rounded-full animate-[pulse_1.1s_ease-in-out_infinite]"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Hover Glow Script inside HTML to manage radial glow -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const cards = document.querySelectorAll('.glow-card');
+                
+                cards.forEach(card => {
+                    // Create glow element
+                    const glow = document.createElement('div');
+                    glow.className = 'absolute pointer-events-none transition-opacity duration-300 opacity-0 z-0 rounded-full blur-[100px]';
+                    glow.style.width = '400px';
+                    glow.style.height = '400px';
+                    glow.style.background = 'radial-gradient(circle, rgba(16,185,129,0.12) 0%, rgba(16,185,129,0) 70%)';
+                    glow.style.transform = 'translate(-50%, -50%)';
+                    
+                    card.insertBefore(glow, card.firstChild);
+                    
+                    card.addEventListener('mousemove', (e) => {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        
+                        glow.style.left = x + 'px';
+                        glow.style.top = y + 'px';
+                        glow.style.opacity = '1';
+                        
+                        card.style.borderColor = 'rgba(16,185,129,0.4)';
+                    });
+                    
+                    card.addEventListener('mouseleave', () => {
+                        glow.style.opacity = '0';
+                        card.style.borderColor = 'rgba(31,41,55,1)'; // gray-800
+                    });
+                });
+            });
+        </script>
+
+        <!-- Pricing Duel Section -->
+        <section id="pricing" class="py-24 relative overflow-hidden">
+            <!-- Background glow -->
+            <div class="absolute inset-0 bg-brand-900/5 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-brand-900/10 via-gray-950 to-gray-950 -z-10"></div>
+            
+            <div class="max-w-5xl mx-auto px-6 lg:px-8">
+                <div class="text-center mb-16 scroll-reveal">
+                    <h2 class="text-3xl md:text-5xl font-bold mb-4">Stop overpaying for AI</h2>
+                    <p class="text-gray-400 text-lg">Get the power of all premium models for a fraction of the cost.</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-8 items-center relative">
+                    
+                    <!-- VS Badge -->
+                    <div class="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-gray-900 border border-gray-700 items-center justify-center font-bold text-gray-400 z-20 shadow-xl">
+                        VS
+                    </div>
+
+                    <!-- Separate Subscriptions -->
+                    <div class="glass-panel p-8 rounded-3xl border border-gray-800 scroll-reveal opacity-80 hover:opacity-100 transition-opacity">
+                        <h3 class="text-xl font-bold text-gray-400 mb-6 flex items-center gap-2">
+                            <i data-lucide="x-circle" class="text-red-500 w-6 h-6"></i> Separate Subscriptions
+                        </h3>
+                        <div class="space-y-4 mb-8">
+                            <div class="flex justify-between items-center pb-4 border-b border-gray-800/50 text-sm">
+                                <span class="flex items-center gap-2"><div class="w-2.5 h-2.5 rounded-full bg-[#10a37f]"></div> ChatGPT Plus</span>
+                                <span class="text-gray-400">$20/mo</span>
+                            </div>
+                            <div class="flex justify-between items-center pb-4 border-b border-gray-800/50 text-sm">
+                                <span class="flex items-center gap-2"><div class="w-2.5 h-2.5 rounded-full bg-[#d97757]"></div> Claude Pro</span>
+                                <span class="text-gray-400">$20/mo</span>
+                            </div>
+                            <div class="flex justify-between items-center pb-4 border-b border-gray-800/50 text-sm">
+                                <span class="flex items-center gap-2"><div class="w-2.5 h-2.5 rounded-full bg-[#4285f4]"></div> Gemini Advanced</span>
+                                <span class="text-gray-400">$20/mo</span>
+                            </div>
+                            <div class="flex justify-between items-center pb-4 border-b border-gray-800/50 text-sm">
+                                <span class="flex items-center gap-2"><div class="w-2.5 h-2.5 rounded-full bg-blue-400"></div> Midjourney/Others</span>
+                                <span class="text-gray-400">$30+/mo</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-end">
+                            <div class="text-gray-500 text-sm font-medium">Total Monthly Cost</div>
+                            <div class="text-3xl font-bold text-red-400 line-through decoration-red-500/50 decoration-2">$90+/mo</div>
+                        </div>
+                    </div>
+                    
+                    <!-- All in One -->
+                    <div class="gradient-border-card p-1 scroll-reveal shadow-[0_0_50px_rgba(16,185,129,0.15)] delay-[100ms]">
+                        <div class="bg-gray-900 rounded-[1.4rem] p-8 h-full relative overflow-hidden">
+                            <!-- Inner glow -->
+                            <div class="absolute top-0 right-0 w-48 h-48 bg-brand-500/10 blur-[50px] rounded-full pointer-events-none"></div>
+                            
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-400 text-xs font-bold uppercase tracking-wider mb-4">
+                                <i data-lucide="star" class="w-3 h-3 fill-brand-400"></i> Most Popular
+                            </div>
+                            
+                            <h3 class="text-2xl font-bold text-white mb-2">Ai maneesha Pro</h3>
+                            <div class="flex items-baseline gap-1 mb-8">
+                                <span class="text-6xl font-bold text-white tracking-tight">$12</span>
+                                <span class="text-gray-400 font-medium">/month</span>
+                            </div>
+                            
+                            <ul class="space-y-4 mb-8">
+                                <li class="flex items-start gap-3">
+                                    <div class="bg-brand-500/20 p-1 rounded-full shrink-0 mt-0.5">
+                                        <i data-lucide="check" class="w-3 h-3 text-brand-400"></i>
+                                    </div>
+                                    <span class="text-gray-200"><strong>Unlimited access</strong> to GPT-4o, Claude 3.7, Gemini 1.5, and DeepSeek</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <div class="bg-brand-500/20 p-1 rounded-full shrink-0 mt-0.5">
+                                        <i data-lucide="check" class="w-3 h-3 text-brand-400"></i>
+                                    </div>
+                                    <span class="text-gray-200"><strong>4x Multi-chat</strong> synchronized interface</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <div class="bg-brand-500/20 p-1 rounded-full shrink-0 mt-0.5">
+                                        <i data-lucide="check" class="w-3 h-3 text-brand-400"></i>
+                                    </div>
+                                    <span class="text-gray-200">Omni-modal inputs (Vision, PDF, Web)</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <div class="bg-brand-500/20 p-1 rounded-full shrink-0 mt-0.5">
+                                        <i data-lucide="check" class="w-3 h-3 text-brand-400"></i>
+                                    </div>
+                                    <span class="text-gray-200">Priority API routing (No rate limits)</span>
+                                </li>
+                            </ul>
+                            
+                            <button onclick="window.location.href='signup.html'" class="w-full py-4 rounded-xl bg-gradient-to-r from-brand-600 to-teal-500 hover:from-brand-500 hover:to-teal-400 text-white font-bold text-lg transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] hover:scale-[1.02]">
+                                Start 7-Day Free Trial
+                            </button>
+                            <p class="text-center text-xs text-gray-500 mt-4 flex items-center justify-center gap-1">
+                                <i data-lucide="shield-check" class="w-3 h-3"></i> Cancel anytime. No credit card required.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Model Ecosystem Hub -->
+        <section id="comparison" class="py-24 px-6 lg:px-8 max-w-7xl mx-auto border-t border-gray-800/50">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">The ultimate AI arsenal</h2>
+                <p class="text-gray-400 text-lg">Harness the specific strengths of each foundational model in one place.</p>
+            </div>
+            
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- GPT-4o -->
+                <div class="group glass-panel p-6 rounded-2xl border border-gray-800 hover:border-[#10a37f]/50 hover:bg-[#10a37f]/5 transition-all cursor-pointer scroll-reveal">
+                    <div class="w-12 h-12 rounded-xl bg-[#10a37f]/10 border border-[#10a37f]/20 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-[#10a37f]/20 transition-all">
+                        <i data-lucide="zap" class="text-[#10a37f] w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">ChatGPT-4o</h3>
+                    <p class="text-sm text-gray-400">Unmatched reasoning, coding abilities, and reliable formatting. The gold standard for general intelligence.</p>
+                </div>
+                
+                <!-- Claude 3.7 -->
+                <div class="group glass-panel p-6 rounded-2xl border border-gray-800 hover:border-[#d97757]/50 hover:bg-[#d97757]/5 transition-all cursor-pointer scroll-reveal delay-[50ms]">
+                    <div class="w-12 h-12 rounded-xl bg-[#d97757]/10 border border-[#d97757]/20 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-[#d97757]/20 transition-all">
+                        <i data-lucide="feather" class="text-[#d97757] w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Claude 3.7 Sonnet</h3>
+                    <p class="text-sm text-gray-400">Superior nuance, human-like creative writing, and a massive 200k token context window.</p>
+                </div>
+                
+                <!-- Gemini -->
+                <div class="group glass-panel p-6 rounded-2xl border border-gray-800 hover:border-[#4285f4]/50 hover:bg-[#4285f4]/5 transition-all cursor-pointer scroll-reveal delay-[100ms]">
+                    <div class="w-12 h-12 rounded-xl bg-[#4285f4]/10 border border-[#4285f4]/20 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-[#4285f4]/20 transition-all">
+                        <i data-lucide="sparkle" class="text-[#4285f4] w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Gemini 1.5 Pro</h3>
+                    <p class="text-sm text-gray-400">1M+ token context window. Perfect for analyzing massive codebases, entire books, and long videos.</p>
+                </div>
+                
+                <!-- DeepSeek -->
+                <div class="group glass-panel p-6 rounded-2xl border border-gray-800 hover:border-[#4d6bfe]/50 hover:bg-[#4d6bfe]/5 transition-all cursor-pointer scroll-reveal delay-[150ms]">
+                    <div class="w-12 h-12 rounded-xl bg-[#4d6bfe]/10 border border-[#4d6bfe]/20 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-[#4d6bfe]/20 transition-all">
+                        <i data-lucide="brain" class="text-[#4d6bfe] w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">DeepSeek R1</h3>
+                    <p class="text-sm text-gray-400">Blazing fast open-weight powerhouse specifically tuned for complex math, logic, and standard coding tasks.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQs -->
+        <section id="faq" class="py-24 px-6 lg:px-8 max-w-3xl mx-auto">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Frequently Asked Questions</h2>
+            </div>
+            
+            <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="glass-panel border border-gray-800 rounded-2xl overflow-hidden scroll-reveal">
+                    <button class="faq-btn w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none hover:bg-gray-800/30 transition-colors">
+                        <span class="font-semibold text-lg">Are these the official models?</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-gray-400 transition-transform duration-300 transform"></i>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 px-6">
+                        <p class="text-gray-400 pb-5 leading-relaxed">Yes. We connect directly to the official enterprise APIs provided by OpenAI, Anthropic, Google, and DeepSeek. You get the exact same intelligence, just in a better unified interface.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 2 -->
+                <div class="glass-panel border border-gray-800 rounded-2xl overflow-hidden scroll-reveal delay-[50ms]">
+                    <button class="faq-btn w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none hover:bg-gray-800/30 transition-colors">
+                        <span class="font-semibold text-lg">What about privacy and my data?</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-gray-400 transition-transform duration-300 transform"></i>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 px-6">
+                        <p class="text-gray-400 pb-5 leading-relaxed">Because we use Enterprise APIs, your data is NOT used to train their foundational models by default. We also offer local encryption options so your chat history remains yours alone.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 3 -->
+                <div class="glass-panel border border-gray-800 rounded-2xl overflow-hidden scroll-reveal delay-[100ms]">
+                    <button class="faq-btn w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none hover:bg-gray-800/30 transition-colors">
+                        <span class="font-semibold text-lg">Are there rate limits?</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-gray-400 transition-transform duration-300 transform"></i>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 px-6">
+                        <p class="text-gray-400 pb-5 leading-relaxed">Our Pro plan offers dynamic load balancing, meaning we rarely hit rate limits. If one API endpoint slows down, we seamlessly route your request to a fallback server to ensure near zero downtime.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-900 bg-[#02050a] relative z-10">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 py-16">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+                <div class="col-span-2">
+                    <a href="#" aria-label="Ai maneesha Home" class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-500 to-teal-400 flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                            <i data-lucide="sparkles" class="w-4 h-4 text-white"></i>
+                        </div>
+                        <span class="font-bold text-xl tracking-tight text-white">Ai maneesha</span>
+                    </a>
+                    <p class="text-gray-500 text-sm max-w-sm leading-relaxed mb-6">Building the ultimate interface for the AI generation. Stop switching tabs, start building faster.</p>
+                    <div class="flex items-center gap-4">
+                        <a href="#" aria-label="Twitter profile" class="text-gray-500 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg></a>
+                        <a href="#" aria-label="GitHub profile" class="text-gray-500 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg></a>
+                        <a href="#" aria-label="LinkedIn profile" class="text-gray-500 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-white mb-6">Product</h4>
+                    <ul class="space-y-3 text-sm text-gray-500">
+                        <li><a href="#features" class="hover:text-brand-400 transition-colors">Features</a></li>
+                        <li><a href="#comparison" class="hover:text-brand-400 transition-colors">Models</a></li>
+                        <li><a href="#pricing" class="hover:text-brand-400 transition-colors">Pricing</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">API <span class="ml-1 text-[10px] bg-brand-500/20 text-brand-400 px-1.5 py-0.5 rounded border border-brand-500/30">Beta</span></a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-white mb-6">Legal & Support</h4>
+                    <ul class="space-y-3 text-sm text-gray-500">
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contact Support</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">System Status</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="pt-8 border-t border-gray-900 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-600">
+                <p>&copy; 2024 Ai maneesha Inc. All rights reserved.</p>
+                <div class="flex items-center gap-2 bg-gray-900/50 px-3 py-1.5 rounded-full border border-gray-800">
+                    <span>Designed for Hackathon Builders</span>
+                    <i data-lucide="heart" class="w-4 h-4 text-red-500 animate-pulse"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Starfield Canvas Logic
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        
+        let stars = [];
+        const numStars = 150;
+        const colors = ['#ffffff', '#67e8f9', '#34d399']; // White, cyan, emerald
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initStars();
+        }
+
+        function initStars() {
+            stars = [];
+            for (let i = 0; i < numStars; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 1.7 + 0.8, // 0.8 to 2.5
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    baseOpacity: Math.random() * 0.5 + 0.3,
+                    speed: Math.random() * 0.02 + 0.005,
+                    angle: Math.random() * Math.PI * 2,
+                    driftY: (Math.random() - 0.5) * 0.1,
+                    driftX: (Math.random() - 0.5) * 0.1
+                });
+            }
+        }
+
+        function animateStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            stars.forEach(star => {
+                star.y += star.driftY;
+                star.x += star.driftX;
+                
+                if (star.y > canvas.height) star.y = 0;
+                if (star.y < 0) star.y = canvas.height;
+                if (star.x > canvas.width) star.x = 0;
+                if (star.x < 0) star.x = canvas.width;
+
+                star.angle += star.speed;
+                const opacity = star.baseOpacity + Math.sin(star.angle) * 0.3;
+                
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fillStyle = star.color;
+                ctx.globalAlpha = Math.max(0, Math.min(1, opacity));
+                ctx.fill();
+            });
+            
+            requestAnimationFrame(animateStars);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        animateStars();
+
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Scroll Reveal Logic
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // FAQ Accordion Logic
+        document.querySelectorAll('.faq-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                const icon = button.querySelector('i');
+                const isOpen = content.style.maxHeight;
+
+                // Close all others
+                document.querySelectorAll('.faq-content').forEach(c => {
+                    c.style.maxHeight = null;
+                });
+                document.querySelectorAll('.faq-btn i').forEach(i => {
+                    i.style.transform = 'rotate(0deg)';
+                });
+
+                // Open clicked if it wasn't open
+                if (!isOpen) {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+
+        // API Integration Logic
+        const promptInput = document.getElementById('prompt-input');
+        const sendBtn = document.getElementById('send-btn');
+        
+        const streams = {
+            gpt: document.getElementById('stream-gpt'),
+            claude: document.getElementById('stream-claude'),
+            gemini: document.getElementById('stream-gemini'),
+            deepseek: document.getElementById('stream-deepseek')
+        };
+
+        const updateLatency = (model, time) => {
+            const streamDiv = streams[model];
+            if (!streamDiv) return;
+            const latencySpan = streamDiv.previousElementSibling.querySelector('.latency-val');
+            if (latencySpan) {
+                latencySpan.textContent = time;
+            }
+        };
+
+        const escapeHtml = (unsafe) => {
+            return unsafe
+                 .replace(/&/g, "&amp;")
+                 .replace(/</g, "&lt;")
+                 .replace(/>/g, "&gt;")
+                 .replace(/"/g, "&quot;")
+                 .replace(/'/g, "&#039;")
+                 .replace(/\n/g, "<br>");
+        };
+
+        const formatCodeBlocks = (text) => {
+            return text.replace(/```(\w*)\n([\s\S]*?)```/g, (match, lang, code) => {
+                const id = 'code-' + Math.random().toString(36).substr(2, 9);
+                return `<div class="relative bg-[#08090b] rounded-lg border border-gray-800 my-3 group shadow-inner">
+                    <div class="flex items-center justify-between px-3 py-1.5 border-b border-gray-800/50 bg-gray-900/50">
+                        <span class="text-[10px] text-gray-500 font-mono lowercase">${lang || 'code'}</span>
+                        <button class="text-gray-500 hover:text-white transition-colors" onclick="navigator.clipboard.writeText(document.getElementById('${id}').innerText); this.innerHTML='<i data-lucide=\\'check\\' class=\\'w-3 h-3 text-brand-400\\'></i>'; lucide.createIcons(); setTimeout(() => { this.innerHTML='<i data-lucide=\\'copy\\' class=\\'w-3 h-3\\'></i>'; lucide.createIcons(); }, 2000)"><i data-lucide="copy" class="w-3 h-3"></i></button>
+                    </div>
+                    <pre class="p-3 overflow-x-auto text-[11px] custom-scrollbar"><code id="${id}">${escapeHtml(code).trim()}</code></pre>
+                </div>`;
+            });
+        };
+
+        const streamText = async (element, text, instant = false) => {
+            if (instant) {
+                element.innerHTML = formatCodeBlocks(text);
+                lucide.createIcons();
+                return;
+            }
+            element.innerHTML = '<span class="text-brand-500 font-bold animate-pulse">|</span>';
+            let currentHtml = '';
+            for (let i = 0; i < text.length; i++) {
+                let nextChar = text[i];
+                if(nextChar === '<') nextChar = '&lt;';
+                else if(nextChar === '>') nextChar = '&gt;';
+                else if(nextChar === '\n') nextChar = '<br>';
+                
+                currentHtml += nextChar;
+                element.innerHTML = currentHtml + '<span class="text-brand-500 font-bold animate-pulse">|</span>';
+                
+                if (i % 2 === 0) {
+                    await new Promise(r => setTimeout(r, 2)); 
+                }
+            }
+            element.innerHTML = formatCodeBlocks(text);
+            lucide.createIcons();
+        };
+
+        let isGenerating = false;
+        let currentSessionData = null;
+
+        const handleSend = async () => {
+            const prompt = promptInput.value.trim();
+            if (!prompt || isGenerating) return;
+
+            const personaSelect = document.getElementById('persona-select');
+            const persona = personaSelect ? personaSelect.value : '';
+
+            isGenerating = true;
+            sendBtn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin text-white"></i>';
+            lucide.createIcons();
+
+            Object.values(streams).forEach(el => {
+                el.innerHTML = '<div class="text-brand-500 animate-pulse">Generating response...</div>';
+            });
+
+            try {
+                const response = await fetch('http://localhost:5000/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt, persona })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    const data = result.data;
+                    currentSessionData = { prompt, data };
+                    localStorage.setItem('aifiesta_session', JSON.stringify(currentSessionData));
+                    
+                    Object.keys(streams).forEach(model => {
+                        if (data[model]) {
+                            streamText(streams[model], data[model].text);
+                            updateLatency(model, data[model].latency);
+                        }
+                    });
+                    
+                    evaluateResponses(data);
+                } else {
+                    Object.values(streams).forEach(el => el.innerHTML = `<div class="text-red-500">Error: ${result.error}</div>`);
+                }
+            } catch (error) {
+                console.error("API Error:", error);
+                Object.values(streams).forEach(el => el.innerHTML = '<div class="text-red-500">Failed to connect to backend. Ensure server is running on port 5000.</div>');
+            } finally {
+                isGenerating = false;
+                sendBtn.innerHTML = '<i data-lucide="arrow-up" class="w-4 h-4 text-white"></i>';
+                lucide.createIcons();
+            }
+        };
+
+        sendBtn.addEventListener('click', handleSend);
+        promptInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                handleSend();
+            }
+        });
+
+        // Preset Pills
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                promptInput.value = e.currentTarget.innerText.replace(/^.*? /, ''); // Remove emoji
+                handleSend();
+            });
+        });
+
+        // Magic Wand Enhance
+        const enhanceBtn = document.getElementById('enhance-btn');
+        if (enhanceBtn) {
+            enhanceBtn.addEventListener('click', () => {
+                const prompt = promptInput.value.trim();
+                if (!prompt) return;
+                promptInput.value = prompt + " \n\nPlease add edge cases, benchmarks, and production code.";
+                handleSend();
+            });
+        }
+
+        const evaluateResponses = (data) => {
+            let fastestModel = null, minLatency = Infinity;
+            let mostComp = null, maxTokens = 0;
+            let bestCode = null, maxCodeBlocks = -1;
+            const names = { gpt: 'GPT-4o', claude: 'Claude 3.7', gemini: 'Gemini 1.5', deepseek: 'DeepSeek R1' };
+            
+            Object.keys(names).forEach(m => {
+                const t = document.getElementById(`trophy-${m}`);
+                if(t) t.classList.add('hidden');
+            });
+
+            Object.keys(data).forEach(model => {
+                if(!data[model]) return;
+                const text = data[model].text || '';
+                const latency = parseFloat(data[model].latency.replace('s', '')) || 999;
+                const tokens = text.split(/\s+/).length;
+                const codeMatch = text.match(/```/g);
+                const codeBlocks = codeMatch ? codeMatch.length / 2 : 0;
+
+                if(latency < minLatency) { minLatency = latency; fastestModel = model; }
+                if(tokens > maxTokens) { maxTokens = tokens; mostComp = model; }
+                if(codeBlocks > maxCodeBlocks && codeBlocks > 0) { maxCodeBlocks = codeBlocks; bestCode = model; }
+            });
+
+            if(!bestCode) bestCode = mostComp;
+            
+            document.getElementById('eval-fastest').textContent = names[fastestModel] || '--';
+            document.getElementById('eval-comprehensive').textContent = names[mostComp] || '--';
+            document.getElementById('eval-code').textContent = names[bestCode] || '--';
+            
+            const banner = document.getElementById('evaluator-banner');
+            banner.classList.remove('hidden');
+            banner.classList.add('flex');
+
+            const scores = { gpt:0, claude:0, gemini:0, deepseek:0 };
+            if(fastestModel) scores[fastestModel]++;
+            if(mostComp) scores[mostComp]++;
+            if(bestCode) scores[bestCode]++;
+            
+            let winner = fastestModel, maxScore = 0;
+            Object.keys(scores).forEach(m => {
+                if(scores[m] > maxScore) { maxScore = scores[m]; winner = m; }
+            });
+            
+            if(winner) {
+                const t = document.getElementById(`trophy-${winner}`);
+                if(t) t.classList.remove('hidden');
+            }
+        };
+
+        // LocalStorage Session Restore
+        const loadSession = () => {
+            const saved = localStorage.getItem('aifiesta_session');
+            if (saved) {
+                try {
+                    const { prompt, data } = JSON.parse(saved);
+                    currentSessionData = { prompt, data };
+                    promptInput.value = prompt;
+                    Object.keys(streams).forEach(model => {
+                        if (data[model]) {
+                            streamText(streams[model], data[model].text, true);
+                            updateLatency(model, data[model].latency);
+                        }
+                    });
+                    evaluateResponses(data);
+                } catch(e) {}
+            }
+        };
+        loadSession();
+
+        // Clear Canvas
+        document.getElementById('clear-btn').addEventListener('click', () => {
+            localStorage.removeItem('aifiesta_session');
+            currentSessionData = null;
+            promptInput.value = '';
+            Object.keys(streams).forEach(model => {
+                streams[model].innerHTML = '';
+                updateLatency(model, '--');
+            });
+        });
+
+        // Copy Buttons
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const targetId = e.currentTarget.getAttribute('data-target');
+                const text = document.getElementById(targetId).innerText;
+                navigator.clipboard.writeText(text);
+                const originalIcon = e.currentTarget.innerHTML;
+                e.currentTarget.innerHTML = '<i data-lucide="check" class="w-3 h-3 text-brand-400"></i>';
+                lucide.createIcons();
+                setTimeout(() => {
+                    e.currentTarget.innerHTML = originalIcon;
+                    lucide.createIcons();
+                }, 2000);
+            });
+        });
+
+        // Export Markdown
+        document.getElementById('export-btn').addEventListener('click', () => {
+            if (!currentSessionData) {
+                alert("No active session to export.");
+                return;
+            }
+            const { prompt, data } = currentSessionData;
+            let mdContent = `# Ai maneesha Comparison\n\n**Prompt:** ${prompt}\n\n`;
+            
+            ['gpt', 'claude', 'gemini', 'deepseek'].forEach(model => {
+                if(data[model]) {
+                    mdContent += `## ${model.toUpperCase()} (Latency: ${data[model].latency})\n\n`;
+                    mdContent += `${data[model].text}\n\n---\n\n`;
+                }
+            });
+
+            const blob = new Blob([mdContent], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'aifiesta_export.md';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+    </script>
+</body>
+</html>
